@@ -384,6 +384,31 @@ class NoticeTest < Test::Unit::TestCase
     assert_equal session_data, notice.session_data
   end
 
+  should "return hash for as_json" do
+    @exception = build_exception
+
+    @notice = build_notice({
+      :notifier_name    => 'a name',
+      :notifier_version => '1.2.3',
+      :notifier_url     => 'http://some.url/path',
+      :exception        => @exception,
+      :controller       => "controller",
+      :action           => "action",
+      :url              => "http://url.com",
+      :parameters       => { "paramskey"     => "paramsvalue",
+                             "nestparentkey" => { "nestkey" => "nestvalue" } },
+      :session_data     => { "sessionkey" => "sessionvalue" },
+      :cgi_data         => { "cgikey" => "cgivalue" },
+      :project_root     => "RAILS_ROOT",
+      :environment_name => "RAILS_ENV"
+    })
+
+    @hash = @notice.as_json
+    assert @hash
+    assert_kind_of Hash, @hash
+    assert_equal @exception.class.to_s, @hash[:error][:class]
+  end
+
   def assert_accepts_exception_attribute(attribute, args = {}, &block)
     exception = build_exception
     block ||= lambda { exception.send(attribute) }
