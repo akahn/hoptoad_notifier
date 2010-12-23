@@ -1,7 +1,7 @@
-require File.dirname(__FILE__) + '/helper'
+require File.expand_path File.dirname(__FILE__) + '/helper'
 require 'rubygems'
 
-require File.dirname(__FILE__) + '/../lib/hoptoad_tasks'
+require File.expand_path File.dirname(__FILE__) + '/../lib/hoptoad_tasks'
 require 'fakeweb'
 
 FakeWeb.allow_net_connect = false
@@ -117,7 +117,7 @@ class HoptoadTasksTest < Test::Unit::TestCase
 
     context "in a configured project with custom host" do
       setup do
-        HoptoadNotifier.configure do |config| 
+        HoptoadNotifier.configure do |config|
           config.api_key = "1234123412341234"
           config.host = "custom.host"
         end
