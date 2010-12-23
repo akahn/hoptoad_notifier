@@ -14,7 +14,7 @@ module HoptoadNotifier
     def initialize(options = {})
       [:proxy_host, :proxy_port, :proxy_user, :proxy_pass, :protocol,
         :host, :port, :secure, :http_open_timeout, :http_read_timeout,
-        :http_path].each do |option|
+        :http_path, :serializer].each do |option|
         instance_variable_set("@#{option}", options[option])
       end
     end
@@ -51,7 +51,8 @@ module HoptoadNotifier
     private
 
     attr_reader :proxy_host, :proxy_port, :proxy_user, :proxy_pass, :protocol,
-      :host, :port, :secure, :http_open_timeout, :http_read_timeout, :http_path
+      :host, :port, :secure, :http_open_timeout, :http_read_timeout,
+      :http_path, :serializer
 
     def url
       URI.parse("#{protocol}://#{host}:#{port}").merge(http_path)

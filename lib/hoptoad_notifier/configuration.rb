@@ -23,6 +23,9 @@ module HoptoadNotifier
     # The path to which Hoptoad sends error notifications
     attr_accessor :http_path
 
+    # The method Hoptoad uses to serialize an error notification
+    attr_accessor :serializer
+
     # +true+ for https connections, +false+ for http connections.
     attr_accessor :secure
 
@@ -124,6 +127,7 @@ module HoptoadNotifier
       @secure                   = false
       @host                     = 'hoptoadapp.com'
       @path                     = '/notifier_api/v2/notices/'
+      @serializer               = :to_xml
       @http_open_timeout        = 2
       @http_read_timeout        = 5
       @params_filters           = DEFAULT_PARAMS_FILTERS.dup
