@@ -4,10 +4,11 @@ module HoptoadNotifier
 
     OPTIONS = [:api_key, :backtrace_filters, :development_environments,
         :development_lookup, :environment_name, :host,
-        :http_open_timeout, :http_read_timeout, :ignore, :ignore_by_filters,
-        :ignore_user_agent, :notifier_name, :notifier_url, :notifier_version,
-        :params_filters, :project_root, :port, :protocol, :proxy_host,
-        :proxy_pass, :proxy_port, :proxy_user, :secure, :framework, :js_notifier].freeze
+        :http_open_timeout, :http_read_timeout, :http_path, :ignore,
+				:ignore_by_filters, :ignore_user_agent, :notifier_name, :notifier_url,
+				:notifier_version, :params_filters, :project_root, :port, :protocol,
+				:proxy_host, :proxy_pass, :proxy_port, :proxy_user, :secure,
+				:framework, :js_notifier].freeze
 
     # The API key for your project, found on the project edit form.
     attr_accessor :api_key
@@ -18,6 +19,9 @@ module HoptoadNotifier
     # The port on which your Hoptoad server runs (defaults to 443 for secure
     # connections, 80 for insecure connections).
     attr_accessor :port
+
+    # The path to which Hoptoad sends error notifications
+    attr_accessor :http_path
 
     # +true+ for https connections, +false+ for http connections.
     attr_accessor :secure
@@ -119,6 +123,7 @@ module HoptoadNotifier
     def initialize
       @secure                   = false
       @host                     = 'hoptoadapp.com'
+      @path                     = '/notifier_api/v2/notices/'
       @http_open_timeout        = 2
       @http_read_timeout        = 5
       @params_filters           = DEFAULT_PARAMS_FILTERS.dup

@@ -2,7 +2,6 @@ module HoptoadNotifier
   # Sends out the notice to Hoptoad
   class Sender
 
-    NOTICES_URI = '/notifier_api/v2/notices/'.freeze
     HTTP_ERRORS = [Timeout::Error,
                    Errno::EINVAL,
                    Errno::ECONNRESET,
@@ -14,7 +13,8 @@ module HoptoadNotifier
 
     def initialize(options = {})
       [:proxy_host, :proxy_port, :proxy_user, :proxy_pass, :protocol,
-        :host, :port, :secure, :http_open_timeout, :http_read_timeout].each do |option|
+        :host, :port, :secure, :http_open_timeout, :http_read_timeout,
+        :http_path].each do |option|
         instance_variable_set("@#{option}", options[option])
       end
     end
@@ -51,10 +51,10 @@ module HoptoadNotifier
     private
 
     attr_reader :proxy_host, :proxy_port, :proxy_user, :proxy_pass, :protocol,
-      :host, :port, :secure, :http_open_timeout, :http_read_timeout
+      :host, :port, :secure, :http_open_timeout, :http_read_timeout, :http_path
 
     def url
-      URI.parse("#{protocol}://#{host}:#{port}").merge(NOTICES_URI)
+      URI.parse("#{protocol}://#{host}:#{port}").merge(http_path)
     end
 
     def log(level, message, response = nil)
