@@ -101,7 +101,7 @@ module HoptoadNotifier
       clean_rack_request_data
     end
 
-    def as_json
+    def as_json(opts = {})
       h = {
         :notifier => {
           :name => notifier_name,

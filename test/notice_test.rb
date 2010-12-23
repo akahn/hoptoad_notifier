@@ -409,6 +409,11 @@ class NoticeTest < Test::Unit::TestCase
     assert_equal @exception.class.to_s, @hash[:error][:class]
   end
 
+  should "return string representation for to_json" do
+    @notice = build_notice
+    assert_match(/notifier/, @notice.to_json)
+  end
+
   def assert_accepts_exception_attribute(attribute, args = {}, &block)
     exception = build_exception
     block ||= lambda { exception.send(attribute) }
