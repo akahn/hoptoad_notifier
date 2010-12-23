@@ -124,7 +124,7 @@ module HoptoadNotifier
 
     def send_notice(notice)
       if configuration.public?
-        sender.send_to_hoptoad(notice.to_xml)
+        sender.send_to_hoptoad(notice.to_json)
       end
     end
 
