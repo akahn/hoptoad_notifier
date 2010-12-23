@@ -22,7 +22,7 @@ module HoptoadNotifier
     # Sends the notice data off to Hoptoad for processing.
     #
     # @param [String] data The XML notice to be sent off
-    def send_to_hoptoad(data)
+    def send_to_hoptoad(data, headers = {})
       logger.debug { "Sending request to #{url.to_s}:\n#{data}" } if logger
 
       http =
@@ -34,7 +34,7 @@ module HoptoadNotifier
       http.use_ssl      = secure
 
       response = begin
-                   http.post(url.path, data, HEADERS)
+                   http.post(url.path, data, HEADERS.dup.merge(headers))
                  rescue *HTTP_ERRORS => e
                    log :error, "Timeout while contacting the Hoptoad server."
                    nil

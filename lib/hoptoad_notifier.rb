@@ -24,7 +24,7 @@ module HoptoadNotifier
 
   HEADERS = {
     'Content-type'             => 'text/xml',
-    'Accept'                   => 'text/xml, application/xml'
+    'Accept'                   => 'text/xml, application/xml, text/javascript, application/json'
   }
 
   class << self
@@ -125,7 +125,11 @@ module HoptoadNotifier
 
     def send_notice(notice)
       if configuration.public?
-        sender.send_to_hoptoad(notice.send(configuration[:serializer]))
+        if configuration.json
+          sender.send_to_hoptoad(notice.to_json, {'Content-Type' => 'application/json'})
+        else
+          sender.send_to_hoptoad(notice.to_xml)
+        end
       end
     end
 
