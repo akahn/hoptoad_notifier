@@ -10,11 +10,10 @@ Feature: Install the Gem in a Rails application and enable the JavaScript notifi
     When I configure the notifier to use the following configuration lines:
       """
       config.api_key     = "myapikey"
-      config.js_notifier = true
       """
     And I define a response for "TestController#index":
       """
-        render :text => '<html><head profile="http://example.com"></head><body></body></html>'
+        render :inline => '<html><head profile="http://example.com"><%= hoptoad_javascript_notifier %></head><body></body></html>'
       """
     And I route "/test/index" to "test#index"
     And I perform a request to "http://example.com:123/test/index"
@@ -34,11 +33,10 @@ Feature: Install the Gem in a Rails application and enable the JavaScript notifi
       config.api_key     = "myapikey!"
       config.host        = "myhoptoad.com"
       config.port        = 3001
-      config.js_notifier = true
       """
     And I define a response for "TestController#index":
       """
-        render :text => "<html><head></head><body></body></html>"
+        render :inline => '<html><head><%= hoptoad_javascript_notifier %></head><body></body></html>'
       """
     And I route "/test/index" to "test#index"
     And I perform a request to "http://example.com:123/test/index"
@@ -56,7 +54,7 @@ Feature: Install the Gem in a Rails application and enable the JavaScript notifi
       """
     And I define a response for "TestController#index":
       """
-        render :text => "<html><head></head><body></body></html>"
+        render :inline => "<html><head></head><body></body></html>"
       """
     And I route "/test/index" to "test#index"
     And I perform a request to "http://example.com:123/test/index"
@@ -69,12 +67,11 @@ Feature: Install the Gem in a Rails application and enable the JavaScript notifi
     When I configure the notifier to use the following configuration lines:
       """
       config.api_key          = "myapikey!"
-      config.js_notifier      = true
       config.environment_name = 'test'
       """
     And I define a response for "TestController#index":
       """
-        render :text => "<html><head></head><body></body></html>"
+        render :inline => '<html><head><%= hoptoad_javascript_notifier %></head><body></body></html>'
       """
     And I route "/test/index" to "test#index"
     And I perform a request to "http://example.com:123/test/index" in the "test" environment

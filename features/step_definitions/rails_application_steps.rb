@@ -206,6 +206,12 @@ When /^I perform a request to "([^\"]*)" in the "([^\"]*)" environment$/ do |uri
   perform_request(uri, environment)
 end
 
+Given /^the response page for a "([^\"]*)" error is$/ do |error, html|
+  File.open(File.join(RAILS_ROOT, "public", "#{error}.html"), "w") do |file|
+    file.write(html)
+  end
+end
+
 Then /^I should receive the following Hoptoad notification:$/ do |table|
   exceptions = @terminal.output.scan(%r{Recieved the following exception:\n([^\n]*)\n}m)
   exceptions.should_not be_empty
@@ -298,7 +304,7 @@ When /^I configure the Heroku gem shim with "([^\"]*)"$/ do |api_key|
   FileUtils.mkdir_p(heroku_script_bin)
   heroku_script     = File.join(heroku_script_bin, "heroku")
   File.open(heroku_script, "w") do |f|
-    f.puts "#!/bin/sh"
+    f.puts "#!/bin/bash"
     f.puts "if [[ $1 == 'console' && $2 == 'puts ENV[%{HOPTOAD_API_KEY}]' ]]; then"
     f.puts "  echo #{api_key}"
     f.puts "fi"
