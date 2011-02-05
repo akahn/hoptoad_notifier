@@ -3,7 +3,7 @@ module HoptoadNotifier
   class Configuration
 
     OPTIONS = [:api_key, :backtrace_filters, :development_environments,
-        :development_lookup, :environment_name, :host,
+        :development_lookup, :environment_name, :json, :host,
         :http_open_timeout, :http_read_timeout, :http_path, :ignore,
         :ignore_by_filters, :ignore_user_agent, :notifier_name, :notifier_url,
         :notifier_version, :params_filters, :project_root, :port, :protocol,
@@ -22,9 +22,6 @@ module HoptoadNotifier
 
     # The path to which Hoptoad sends error notifications
     attr_accessor :http_path
-
-    # The method Hoptoad uses to serialize an error notification
-    attr_accessor :serializer
 
     # +true+ for https connections, +false+ for http connections.
     attr_accessor :secure
@@ -46,6 +43,9 @@ module HoptoadNotifier
 
     # The password to use when logging into your proxy server (if using a proxy)
     attr_accessor :proxy_pass
+
+    # Send error data to the server as JSON instead of XML (defaults to false)
+    attr_accessor :json
 
     # A list of parameters that should be filtered out of what is sent to Hoptoad.
     # By default, all "password" attributes will have their contents replaced.
@@ -126,8 +126,7 @@ module HoptoadNotifier
     def initialize
       @secure                   = false
       @host                     = 'hoptoadapp.com'
-      @path                     = '/notifier_api/v2/notices/'
-      @serializer               = :to_xml
+      @http_path                = '/notifier_api/v2/notices/'
       @http_open_timeout        = 2
       @http_read_timeout        = 5
       @params_filters           = DEFAULT_PARAMS_FILTERS.dup
@@ -142,6 +141,7 @@ module HoptoadNotifier
       @notifier_url             = 'http://hoptoadapp.com'
       @framework                = 'Standalone'
       @user_information         = 'Hoptoad Error {{error_id}}'
+      @json                     = false
     end
 
     # Takes a block and adds it to the list of backtrace filters. When the filters
