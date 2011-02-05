@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/helper'
+require File.expand_path File.dirname(__FILE__) + '/helper'
 
 class UserInformerTest < Test::Unit::TestCase
   should "modify output if there is a hoptoad id" do
