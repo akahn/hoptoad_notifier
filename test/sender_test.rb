@@ -2,6 +2,8 @@ require File.expand_path File.dirname(__FILE__) + '/helper'
 
 class SenderTest < Test::Unit::TestCase
 
+  NOTICES_URL = "http://hoptoadapp.com:80/notifier_api/v2/notices/"
+
   def setup
     reset_config
   end
@@ -37,8 +39,7 @@ class SenderTest < Test::Unit::TestCase
     proxy    = stub(:new => http)
     Net::HTTP.stubs(:Proxy => proxy)
 
-    url = "http://hoptoadapp.com:80#{HoptoadNotifier::Sender::NOTICES_URI}"
-    uri = URI.parse(url)
+    uri = URI.parse(NOTICES_URL)
 
     proxy_host = 'some.host'
     proxy_port = 88
@@ -96,8 +97,7 @@ class SenderTest < Test::Unit::TestCase
 
   should "post to the right url for non-ssl" do
     http = stub_http
-    url = "http://hoptoadapp.com:80#{HoptoadNotifier::Sender::NOTICES_URI}"
-    uri = URI.parse(url)
+    uri = URI.parse(NOTICES_URL)
     send_exception(:secure => false)
     assert_received(http, :post) {|expect| expect.with(uri.path, anything, HoptoadNotifier::HEADERS) }
   end
@@ -105,7 +105,7 @@ class SenderTest < Test::Unit::TestCase
   should "post to the right path for ssl" do
     http = stub_http
     send_exception(:secure => true)
-    assert_received(http, :post) {|expect| expect.with(HoptoadNotifier::Sender::NOTICES_URI, anything, HoptoadNotifier::HEADERS) }
+    assert_received(http, :post) {|expect| expect.with(NOTICES_URL, anything, HoptoadNotifier::HEADERS) }
   end
 
   should "default the open timeout to 2 seconds" do
