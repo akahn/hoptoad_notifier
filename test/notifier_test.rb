@@ -133,7 +133,7 @@ class NotifierTest < Test::Unit::TestCase
     config_opts = { 'one' => 'two', 'three' => 'four' }
     notice = stub_notice!
     stub_sender!
-    HoptoadNotifier.configuration = stub('config', :merge => config_opts, :public? => true)
+    HoptoadNotifier.configuration = stub('config', :merge => config_opts, :public? => true, :json => false)
 
     HoptoadNotifier.notify(exception)
 
